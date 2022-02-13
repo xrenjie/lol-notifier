@@ -8,7 +8,7 @@ const Summoner = require("../models/summoner.model");
 
 //get summoner names attached to existing webhook
 router.route("/get").get((req, res) => {
-  Discord.find({ webhook: req.query.webhook })
+  Discord.find({ webhook: req.body.webhook })
     .then((discord) => res.json(discord.summonerNames))
     .catch((err) => res.status(400).json("Error: " + err));
 });

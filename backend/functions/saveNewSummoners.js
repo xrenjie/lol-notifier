@@ -12,7 +12,6 @@ summoners.forEach((summonerNameWithRegion) => {
   setTimeout(() => {
     //summoner name in format of "summonerName#region"
 
-    console.log("checking: " + summonerNameWithRegion);
     let region = summonerNameWithRegion.slice(
       summonerNameWithRegion.indexOf("#") + 1
     );
