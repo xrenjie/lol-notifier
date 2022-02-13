@@ -1,0 +1,31 @@
+General workflow
+
+1. user enters webhook and summoner names
+2. save webhook and list of associated summoner names
+3. for each summoner, mark hasAttachedWebhooks=true (means it is being tracked)
+
+
+Backend workflow
+
+1. maintain a queue of summoners to check
+2. check at most one every 2 seconds for active game
+3. if summoner is in an active game, get all webhooks containing the summoner
+4. update summoner lastQueried and lastGameId
+5. send a post request to each webhook indicating the summoner is in game
+
+Subprocess: 
+
+2.1. in a subprocess, query mongo every 5 minutes for all hasAttachedWebhooks summoners 
+2.2. for each, check lastQueried is more than 10 minutes ago
+	2.2.1. if yes, add summoner to queue
+	2.2.2. else skip and check next summoner
+
+
+Summoner removal (when removing summoners from a list)
+
+1. compare existing list with updated list
+2. for each summoner: 
+	2.1. check if it is still in another list
+	2.2. if yes, just remove from current list
+	2.3. if no, mark summoner hasAttachedWebhooks=false
+
