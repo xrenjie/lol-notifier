@@ -8,9 +8,19 @@ const Summoner = require("../models/summoner.model");
 
 //get summoner names attached to existing webhook
 router.route("/get").get((req, res) => {
-  Discord.find({ webhook: req.body.webhook })
-    .then((discord) => res.json(discord.summonerNames))
-    .catch((err) => res.status(400).json("Error: " + err));
+  Discord.findOne({ webhook: req.query.webhook })
+    .then((discord) => {
+      if (discord.summoners.length > 0)
+        res.json({ summoners: discord.summoners });
+      else res.json({ summoners: [] });
+    })
+    .catch((err) => {
+      const newDiscord = new Discord({
+        webhook: req.query.webhook,
+        summoners: [],
+      }).save();
+      res.json({ summoners: [] });
+    });
 });
 
 //add new discord webhook and corresponding summoner name(s)
@@ -19,7 +29,7 @@ router.route("/add").post((req, res) => {
   const receivedSummoners = req.body.summoners;
 
   let summoners = receivedSummoners.map((summoner) => {
-    return summoner.summonerName.toLowerCase() + "#" + summoner.region;
+    return summoner.name.toLowerCase() + "#" + summoner.region;
   });
 
   const newDiscord = new Discord({
@@ -49,7 +59,7 @@ router.route("/edit").put((req, res) => {
   const receivedSummoners = req.body.summoners;
 
   let summoners = receivedSummoners.map((summoner) => {
-    return summoner.summonerName.toLowerCase() + "#" + summoner.region;
+    return summoner.name.toLowerCase() + "#" + summoner.region;
   });
 
   Discord.findOneAndUpdate(

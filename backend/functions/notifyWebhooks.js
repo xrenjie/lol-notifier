@@ -1,18 +1,6 @@
-const async = require("async");
 const axios = require("axios");
 
-const queue = async.queue(({ summonerName, region, webhooks }, callback) => {
-  webhooks.forEach((webhook) => {
-    axios.post(webhook.webhook, {
-      content: summonerName + "#" + region + " is in game",
-    });
-  });
-  //if summoner is sent here, it is in a game
-  //send post request to each webhook
-}, 1);
-
 //receive object from fetch.js
-
 process.on("message", ({ summonerNameWithRegion, webhooks }) => {
   let region = summonerNameWithRegion.slice(
     summonerNameWithRegion.indexOf("#") + 1

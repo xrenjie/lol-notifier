@@ -6,9 +6,10 @@ const childProcess = require("child_process");
 const Discord = require("../models/discord.model");
 const Summoner = require("../models/summoner.model");
 
-const notify = childProcess.fork("./functions/notifyWebhooks.js");
 const mongoose = require("mongoose");
 mongoose.connect(process.env.ATLAS_URI, { useNewUrlParser: true });
+
+const notify = childProcess.fork("./functions/notifyWebhooks.js");
 
 //work queue
 const queue = async.queue(
@@ -43,7 +44,6 @@ const queue = async.queue(
         })
         .catch((err) => {
           if (err.response.status === 404) {
-            console.log("summoner " + summonerName + " is not in game");
           } else {
             console.log(err);
           }
@@ -56,15 +56,17 @@ const queue = async.queue(
 );
 
 /*
-Checks every 5 minutes for all tracked summoners
+Checks every 10 minutes for all tracked summoners
 If a summoner is tracked, it will add to queue which will query riot api for active game every 2 seconds
 If a summoner is in game, check if the current game Id is different from the last game Id
 If yes, then push to notify.js and notify all attached webhooks
 */
 setInterval(() => {
+  //find summoners that are tracked by some webhook
+  //and have not been queried in 20 minutes
   Summoner.find({
     hasAttachedWebhooks: true,
-    lastQueried: { $lte: new Date() - 30000 },
+    lastQueried: { $lte: new Date() - 1200000 },
   }).then((summoners) => {
     summoners.forEach((summoner) => {
       //update summoner lastQueried
