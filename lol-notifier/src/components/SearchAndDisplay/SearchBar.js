@@ -36,7 +36,6 @@ const SearchBar = () => {
         if (res.status === 200) {
           setWebhookUrl(webhookInputUrl);
           setWebhookName(res.data.name);
-          console.log("url: " + process.env.REACT_APP_SERVER_URL);
           axios
             .get(`${process.env.REACT_APP_SERVER_URL}/get`, {
               params: {
