@@ -13,7 +13,7 @@ const WebhookInfoDisplay = () => {
   };
 
   return (
-    <div className="flex flex-row shadow-lg">
+    <div className="flex flex-row shadow-lg bg-white bg-opacity-90">
       <button className=" p-4 w-12" onClick={handleBack}>
         <BackIcon className="h-8 w-8" />
       </button>

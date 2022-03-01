@@ -10,7 +10,7 @@ const SubscribePage = () => {
   const [id, setId] = useState(0);
 
   return (
-    <div className="mx-[20vw] my-20 ">
+    <div className="w-[60vw] my-20 ">
       {loaded ? null : <SearchBar id={id} setId={setId} />}
       {loading ? <Loader /> : null}
       {loaded ? (
@@ -23,7 +23,7 @@ const SubscribePage = () => {
   );
 };
 
-export default SubscribePage;
+export default React.memo(SubscribePage);
 
 //Component includes SearchBar when no input,
 //Searchbar disappears and replaced with WebhookInfoDisplay with webhook name and button to apply changes at top

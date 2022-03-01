@@ -5,12 +5,18 @@ import { WebhookProvider } from "./utils/WebhookContext";
 
 function App() {
   return (
-    <div className="App text-4xl text-center mt-20">
-      <div className="font-bold logo">League Notifier</div>
-      <WebhookProvider>
-        <SubscribePage />
-      </WebhookProvider>
-    </div>
+    <>
+      <div className="App backdrop-blur-sm h-screen">
+        <div className="relative text-4xl text-center h-full flex justify-center flex-column">
+          <div className="Backdrop relative top-20 py-8 px-60 drop-shadow-lg bg-white w-fit h-fit ">
+            <div className="font-bold logo relative">League Notifier</div>
+            <WebhookProvider>
+              <SubscribePage />
+            </WebhookProvider>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

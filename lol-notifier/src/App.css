@@ -86,3 +86,13 @@
 .logo {
   font-family: "Rowdies", cursive;
 }
+
+body {
+  background-image: url("./assets/Summoners_Rift.png");
+  background-size: cover;
+  background-repeat: repeat-y;
+}
+
+.Backdrop {
+  background-color: rgba(255, 255, 255, 0.8);
+}
