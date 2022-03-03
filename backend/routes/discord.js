@@ -8,6 +8,16 @@ const Summoner = require("../models/summoner.model");
 
 //get summoner names attached to existing webhook
 router.route("/get").get((req, res) => {
+  if (!req.query) {
+    return res.send("No webhook provided");
+  }
+  if (!req.query.webhook) {
+    return res.send("Invalid webhook");
+  }
+
+  if (!req.query.webhook.startsWith("https://discord.com/api/webhooks")) {
+    return res.send("Invalid webhook");
+  }
   Discord.findOne({ webhook: req.query.webhook })
     .then((discord) => {
       if (discord.summoners.length > 0)

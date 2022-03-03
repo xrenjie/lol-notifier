@@ -22,7 +22,7 @@ const discordRouter = require("./routes/discord");
 
 app.use("/api/discord", discordRouter);
 
-//start fetch process
+// start fetch process
 childProcess.fork("./functions/fetchSummonerStatus.js");
 
 app.listen(port, () => {

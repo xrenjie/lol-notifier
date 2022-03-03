@@ -11,6 +11,9 @@ mongoose.connect(process.env.ATLAS_URI, { useNewUrlParser: true });
 
 const notify = childProcess.fork("./functions/notifyWebhooks.js");
 
+const queryInterval = 600000; //10 minutes in milliseconds
+
+console.log("Fetch Summoner Status service started");
 //work queue
 const queue = async.queue(
   ({ summonerId, webhooks, summonerName, lastGameId }, callback) => {
@@ -23,7 +26,11 @@ const queue = async.queue(
       axios
         .get(
           `https://${region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/${summonerId}`,
-          { headers: { "X-Riot-Token": process.env.RIOT_API_KEY } }
+          {
+            headers: {
+              "X-Riot-Token": `${process.env.RIOT_API_KEY}`,
+            },
+          }
         )
         .then(({ data }) => {
           //if summoner is in a new game, send details to notify.js
@@ -95,7 +102,7 @@ setInterval(() => {
         .catch((err) => console.log(err));
     });
   });
-}, 600000);
+}, queryInterval);
 //should be 600000 ms (10 minutes) in production
 
 //this will be a child process forked and started from server.js
